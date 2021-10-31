@@ -7,7 +7,7 @@
 module control_unit(input [6:0] inst, input[2:0] funct3, output reg branch, output reg memRead, output reg[2:0] memToReg, output reg memWrite, output reg ALUSrc, output reg regWrite, output reg [1:0]  ALUOp, output reg[2:0] memOffset, output reg unsignedFlag, output reg[1:0] PC_mux);
 
 always@(*) begin
-    if(inst == 7'b0110111) begin
+    if(inst == 7'b0110111) begin  // LUI
         branch = 1'b0;
         memRead = 1'b0;
         memToReg = 3'b011;
@@ -19,7 +19,7 @@ always@(*) begin
         unsignedFlag = 1'b0;
 	PC_mux = 2'b00;
     end
-    else if(inst == 7'b0010111) begin
+    else if(inst == 7'b0010111) begin  // AUIPC
         branch = 1'b0;
         memRead = 1'b0;
         memToReg = 3'b100;
@@ -31,7 +31,7 @@ always@(*) begin
         unsignedFlag = 1'b0;
 	PC_mux = 2'b00;
     end
-    else if(inst == 7'b1101111) begin
+    else if(inst == 7'b1101111) begin // JAL
         branch = 1'b0;
         memRead = 1'b0;
         memToReg = 3'b010;
@@ -43,7 +43,7 @@ always@(*) begin
         unsignedFlag = 1'b0;
 	PC_mux = 2'b01;
     end
-    else if(inst == 7'b1100111) begin
+    else if(inst == 7'b1100111) begin // JALR
         branch = 1'b0;
         memRead = 1'b0;
         memToReg = 3'b010;
@@ -55,43 +55,43 @@ always@(*) begin
         unsignedFlag = 1'b0;
 	PC_mux = 2'b10;
     end
-    else if(inst == 7'b1100011) begin
+    else if(inst == 7'b1100011) begin // B-type
         branch = 1'b1;
         memRead = 1'b0;
         memToReg = 3'b000;
         memWrite = 1'b0;
         ALUSrc = 1'b0;
         regWrite = 1'b0;
-        ALUOp = 2'b00;
+        ALUOp = 2'b11;
         memOffset = 3'b000;
         unsignedFlag = 1'b0;
 	PC_mux = 2'b11;
     end
-    else if(inst == 7'b0010011) begin
+    else if(inst == 7'b0010011) begin // I-type
         branch = 1'b0;
         memRead = 1'b0;
         memToReg = 3'b000;
         memWrite = 1'b0;
         ALUSrc = 1'b1;
         regWrite = 1'b1;
-        ALUOp = 2'b00;
+        ALUOp = 2'b01;
         memOffset = 3'b000;
         unsignedFlag = 1'b0;
 	PC_mux = 2'b00;
     end
-    else if(inst == 7'b0110011) begin
+    else if(inst == 7'b0110011) begin // R-type
         branch = 1'b0;
         memRead = 1'b0;
         memToReg = 3'b000;
         memWrite = 1'b0;
         ALUSrc = 1'b0;
         regWrite = 1'b1;
-        ALUOp = 2'b00;
+        ALUOp = 2'b10;
         memOffset = 3'b000;
         unsignedFlag = 1'b0;
 	PC_mux = 2'b00;
     end
-    else if(inst == 7'b0000011) begin
+    else if(inst == 7'b0000011) begin // load
         branch = 1'b0;
         memRead = 1'b1;
         memToReg = 3'b001;
@@ -121,7 +121,7 @@ always@(*) begin
         	unsignedFlag = 1'b1;
 	end
     end
-    else if(inst == 7'b0100011) begin
+    else if(inst == 7'b0100011) begin // store
         branch = 1'b0;
         memRead = 1'b0;
         memToReg = 3'b000;
@@ -141,61 +141,6 @@ always@(*) begin
 		memOffset = 3'b100;
 	end
     end 
- 
-
-
-
-
-
-
-
-  /*
-  if(inst == 5'b01100) begin
-    branch = 1'b0;
-    memRead = 1'b0;
-    memToReg = 1'b0;
-    memWrite = 1'b0;
-    ALUSrc = 1'b0;
-    regWrite = 1'b1;
-    ALUOp = 2'b10;
-  end
-  else if(inst == 5'b00000) begin
-    branch = 1'b0;
-    memRead = 1'b1;
-    memToReg = 1'b1;
-    memWrite = 1'b0;
-    ALUSrc = 1'b1;
-    regWrite = 1'b1;
-    ALUOp = 2'b00;
-  end
-  else if(inst == 5'b01000) begin
-    branch = 1'b0;
-    memRead = 1'b0;
-    memToReg = memToReg;
-    memWrite = 1'b1;
-    ALUSrc = 1'b1;
-    regWrite = 1'b0;
-    ALUOp = 2'b00;
-  end
-  else if(inst == 5'b11000) begin
-    branch = 1'b1;
-    memRead = 1'b0;
-    memToReg = memToReg;
-    memWrite = 1'b0;
-    ALUSrc = 1'b0;
-    regWrite = 1'b0;
-    ALUOp = 2'b01;
-  end
-  else begin
-    branch = branch;
-    memRead = memRead;
-    memToReg = memToReg;
-    memWrite = memWrite;
-    ALUSrc = ALUSrc;
-    regWrite = regWrite;
-    ALUOp = ALUOp;
-  end
-  */
 end
 
 endmodule
