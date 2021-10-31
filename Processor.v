@@ -34,6 +34,44 @@ module Processor(input clk, reset, ssd_clk, input[1:0] ledSel, input[3:0] ssdSel
  n_bit_reg_file regPC(clk, reset, 1'b1, next_PC , PC);
  
  
+always @(*) begin
+    if(ledSel == 2'b00)
+        LEDs = instruction [15:0];
+    else if (ledSel == 2'b01)
+        LEDs = instruction [31:16];
+    else if (ledSel == 2'b10)
+        LEDs = {8'b00000000, ALUOp, ALUSelection, zeroFlag, zeroFlag&branch};
+    else
+        LEDs = 0;
+    end    
 
+always @(*) begin
+    if(ssdSel == 4'b0000)
+        ssdOut = PC;
+    else if(ssdSel == 4'b0001)
+        ssdOut = PC + 1;
+    else if(ssdSel == 4'b0010)
+        ssdOut = PC_target;
+    else if(ssdSel == 4'b0011)
+        ssdOut = next_pc;
+    else if(ssdSel == 4'b0100)
+        ssdOut = read_data1;
+    else if(ssdSel == 4'b0101)
+        ssdOut = read_data2;
+    else if(ssdSel == 4'b0110)
+        ssdOut = write_data;
+    else if(ssdSel == 4'b0111)
+        ssdOut = Immediate;
+    else if(ssdSel == 4'b1000)
+        ssdOut = Immediate*2;
+    else if(ssdSel == 4'b1001)
+        ssdOut = ALU_input2;
+    else if(ssdSel == 4'b1010)
+        ssdOut = ALUOutput;
+    else if(ssdSel == 4'b1011)
+        ssdOut = mem_data_out;
+end
+
+Four_Digit_Seven_Segment_Driver four_Digit_Seven_Segment_Driver(ssd_clk, ssdOut, Anode, LED_out);
  
 endmodule
