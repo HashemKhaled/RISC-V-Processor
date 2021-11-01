@@ -96,27 +96,28 @@ always@(*) begin
         ALUSrc = 1'b1;
         regWrite = 1'b1;
         ALUOp = 2'b00;
-	PC_mux = 2'b00;
-	if(inst[`IR_funct3] == 3'b000) begin
-        	memOffset = 3'b001;
-        	unsignedFlag = 1'b0;
-	end
-	else if(inst[`IR_funct3] == 3'b001) begin
-		memOffset = 3'b010;
-        	unsignedFlag = 1'b0;
-	end
-	else if(inst[`IR_funct3] == 3'b010) begin
-		memOffset = 3'b100;
-        	unsignedFlag = 1'b0;
-	end
-	else if(inst[`IR_funct3] == 3'b100) begin
-		memOffset = 3'b001;
-        	unsignedFlag = 1'b1;
-	end
-	else if(inst[`IR_funct3] == 3'b101) begin
-		memOffset = 3'b010;
-        	unsignedFlag = 1'b1;
-	end
+	   PC_mux = 2'b00;
+        if(funct3 == 3'b000) begin
+            memOffset = 3'b001;
+            unsignedFlag = 1'b0;
+        end
+        else if(funct3 == 3'b001) begin
+            memOffset = 3'b010;
+            unsignedFlag = 1'b0;
+        end
+        else if(funct3 == 3'b010) begin
+            memOffset = 3'b100;
+            unsignedFlag = 1'b0;
+        end
+        else if(funct3 == 3'b100) begin
+            memOffset = 3'b001;
+            unsignedFlag = 1'b1;
+        end
+        else if(funct3 == 3'b101) begin
+            memOffset = 3'b010;
+            unsignedFlag = 1'b1;
+        end
+        
     end
     else if(inst == 7'b0100011) begin // store
         branch = 1'b0;
@@ -126,17 +127,29 @@ always@(*) begin
         ALUSrc = 1'b1;
         regWrite = 1'b0;
         ALUOp = 2'b00;
-	PC_mux = 2'b00;
-	unsignedFlag = 1'b0;
-	if(inst[`IR_funct3] == 3'b000) begin
-        	memOffset = 3'b001;
-	end
-	else if(inst[`IR_funct3] == 3'b001) begin
-		memOffset = 3'b010;
-	end
-	else if(inst[`IR_funct3] == 3'b010) begin
-		memOffset = 3'b100;
-	end
+        PC_mux = 2'b00;
+        unsignedFlag = 1'b0;
+        if(funct3 == 3'b000) begin
+                memOffset = 3'b001;
+        end
+        else if(funct3 == 3'b001) begin
+            memOffset = 3'b010;
+        end
+        else if(funct3 == 3'b010) begin
+            memOffset = 3'b100;
+        end
+    end
+    else begin  // ECALL - EBREAK - Fence
+        branch = 1'b0;
+        memRead = 1'b0;
+        memToReg = 3'b000;
+        memWrite = 1'b00;
+        ALUSrc = 1'b0;
+        regWrite = 1'b0;
+        ALUOp = 2'b00;
+        PC_mux = 2'b01;
+        unsignedFlag = 1'b0;
+        memOffset = 3'b000;    
     end 
 end
 
