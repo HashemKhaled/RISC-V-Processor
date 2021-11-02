@@ -24,9 +24,9 @@ module shifter(input[31:0] a, input[4:0] shamt, input[1:0] type,  output reg[31:
 //  >>> $signed(a)
 //  >> $unsigned(a)
 always @(*) begin
-    if(type == 2'b00) r = a >> $unsigned(shamt);
+    if(type == 2'b00) r = $unsigned(a) >> shamt;
     else if(type == 2'b01) r = a << shamt;
-    else if(type == 2'b10) r = a >>> $signed(shamt);
+    else if(type == 2'b10) r = $signed(a) >>> shamt;
     else r = a;
 end
 endmodule
