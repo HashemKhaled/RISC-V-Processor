@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module n_bit_reg_file #(parameter n = 8)(input clk, input rst, input load, input[n-1: 0]D, output [n-1: 0]Q );
+module n_bit_reg_file #(parameter n = 32)(input clk, input rst, input load, input[n-1: 0]D, output [n-1: 0]Q );
 
 wire [n-1:0] Y;
 genvar i;
