@@ -139,7 +139,7 @@ always@(*) begin
             memOffset = 3'b100;
         end
     end
-    else begin  // ECALL - EBREAK - Fence
+    else begin  // ECALL - EBREAK - FENCE
         branch = 1'b0;
         memRead = 1'b0;
         memToReg = 3'b000;
