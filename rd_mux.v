@@ -28,7 +28,7 @@ always@(*) begin
     3'b001: rd_write_data = DataMemOutput;
     3'b010: rd_write_data = PC_plus_4;
     3'b011: rd_write_data = ImmGenOutput;
-    3'b110: rd_write_data = PC_plus_imm;
+    3'b100: rd_write_data = PC_plus_imm;
   endcase
 end
 
