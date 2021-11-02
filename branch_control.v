@@ -12,7 +12,7 @@ always@(*)begin
   else if(funct3 == `BR_BGE) sig = (sf == vf);
   else if(funct3 == `BR_BLTU) sig = (!cf);
   else if(funct3 == `BR_BGEU) sig = (cf);
-  else sig = 0;
+  else sig = 0; // ECALL - EBREAK - FENCE
 end
 
 endmodule
