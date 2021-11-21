@@ -103,7 +103,26 @@ end
 
 // IF/ID Stage
 
+always@(*)begin
+    if(slow_clk)begin
+        mem_in = PC;
+        initial_IR = mem_out;
+        mem_data_out=mem_data_out;
+    end
+    else begin
+        mem_in = EX_MEM_ALU_out;
+        mem_data_out = mem_out;
+        initial_IR =initial_IR;
+    end
+end
 
+decompression_unit dec(initial_IR, IR, compressed);
+
+//IF/ID Register
+n_bit_reg_file #(64) IF_ID (~slow_clk,reset,1'b1,
+ {PC, IR},
+ {IF_ID_PC,IF_ID_Inst} );
+ 
 // ID_EX
 
 control_unit cu(IF_ID_Inst[6:0], IF_ID_Inst[`IR_funct3], branch, memRead, memToReg, memWrite, ALUSrc, regWrite, ALUOp, memOffset, unsignedFlag, PC_mux);
@@ -148,7 +167,6 @@ n_bit_reg_file #(173) MEM_WB (slow_clk,reset,1'b1,
  // Write Back Stage
  rd_mux rd_input_data(MEM_WB_ALU_out, MEM_WB_Mem_out, MEM_WB_PC+4, MEM_WB_Imm, MEM_WB_PC_target, MEM_WB_Ctrl[3:1], write_data);
  n_bit_reg_file regPC(slow_clk, reset, 1'b1, next_PC , PC); 
- 
  
 
 endmodule
