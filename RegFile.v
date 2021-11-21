@@ -12,7 +12,7 @@ mux_W #(N) w(32'd0,load, regWrite, final_load);
 genvar i;
     generate
         for(i=1; i<N ; i= i+1) begin: HB2
-        n_bit_reg_file #(N) tuu(.clk(clk), .rst(rst), .load(final_load[i]), .D(write_data), .Q(Q[i]));
+        n_bit_reg_file #(N) tuu(.clk(~clk), .rst(rst), .load(final_load[i]), .D(write_data), .Q(Q[i]));
         end
     endgenerate
     assign Q[0] = 32'd0;
