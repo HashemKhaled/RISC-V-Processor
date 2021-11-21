@@ -25,7 +25,7 @@ module tb();
 reg clk;
 reg reset;
 
-Processor p_tb(clk, reset);
+RISCV_pipeline tt(clk, reset);
 
 initial begin
 clk = 0;
@@ -34,5 +34,5 @@ reset = 1;
 reset = 0;
 end
 always
-  #10 clk = ~clk;
+  #20 clk = ~clk;
 endmodule
