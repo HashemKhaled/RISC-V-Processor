@@ -1,7 +1,7 @@
 `timescale 1ns/1ns
 `include "defines.v"
 
-module control_unit(input [6:0] inst, input[2:0] funct3, output reg branch, output reg memRead, output reg[2:0] memToReg, output reg memWrite, output reg ALUSrc, output reg regWrite, output reg [1:0]  ALUOp, output reg[2:0] memOffset, output reg unsignedFlag, output reg[1:0] PC_mux);
+module control_unit( input [6:0] inst, input[2:0] funct3, output reg branch, output reg memRead, output reg[2:0] memToReg, output reg memWrite, output reg ALUSrc, output reg regWrite, output reg [1:0]  ALUOp, output reg[2:0] memOffset, output reg unsignedFlag, output reg[1:0] PC_mux);
 
 always@(*) begin
     if(inst == 7'b0110111) begin  // LUI
@@ -139,7 +139,7 @@ always@(*) begin
             memOffset = 3'b100;
         end
     end
-    else begin  // ECALL - EBREAK - FENCE
+    else if(inst == 7'b0001111 || inst ==7'b1110011) begin
         branch = 1'b0;
         memRead = 1'b0;
         memToReg = 3'b000;
@@ -148,6 +148,18 @@ always@(*) begin
         regWrite = 1'b0;
         ALUOp = 2'b00;
         PC_mux = 2'b01;
+        unsignedFlag = 1'b0;
+        memOffset = 3'b000; 
+    end
+    else begin  // ECALL - EBREAK - Fence
+        branch = 1'b0;
+        memRead = 1'b0;
+        memToReg = 3'b000;
+        memWrite = 1'b00;
+        ALUSrc = 1'b0;
+        regWrite = 1'b0;
+        ALUOp = 2'b00;
+        PC_mux = 2'b00;
         unsignedFlag = 1'b0;
         memOffset = 3'b000;    
     end 
