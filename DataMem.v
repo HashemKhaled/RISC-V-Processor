@@ -38,6 +38,13 @@ module DataMem
  end 
  
  
+ always@(* ) begin
+     inst_out[7:0] = mem[addr];
+     inst_out[15:8] = mem[addr+1];
+     inst_out[23:16] = mem[addr+2];
+     inst_out[31:24] = mem[addr+3];
+ end
+ 
  always@(*) begin
     if(MemRead) begin
         if(memOffset == 3'b100) begin
